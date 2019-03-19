@@ -1,6 +1,13 @@
 import java.util.Scanner;
 public class HumanPlayer extends Player {
 	private static Scanner sc = new Scanner(System.in);
+	public HumanPlayer() {
+		super();
+	}
+	public HumanPlayer(String name) {
+		super();
+		this.name = name;
+	}
 	@Override
 	public int play(Field f) {
 		//Ask the user for an integer Input, repeat until a valid input is given

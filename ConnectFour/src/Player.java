@@ -1,6 +1,6 @@
 
 public abstract class Player {
-	private String name ="";
+	protected String name ="";
 	private int id;
 	public static int counter = 1;
 	public Player() {

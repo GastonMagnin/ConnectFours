@@ -2,12 +2,11 @@ import java.util.Scanner;
 public class Game {
 	private static Scanner sc = new Scanner(System.in);
 	public static void main(String[] args) {
-		Game game = new Game();
-		game.init();
+		(new Game()).init();
 	}
 	public void init() {
-		Player player1 = new HumanPlayer();
-		Player player2 = (getBoolean("Do you want to play vs. a friend?")) ? new HumanPlayer() : new RandomPlayer();
+		Player player1 = new HumanPlayer(getString("What is your Name?"));
+		Player player2 = (getBoolean("Do you want to play vs. a friend?")) ? new HumanPlayer(getString("What is your Name?")) : new RandomPlayer();
 		Field field = new Field(getInt("rows:"), getInt("columns:"));
 		gameLoop(player1, player2, field);
 	}
@@ -16,18 +15,18 @@ public class Game {
 		Player current;
 		int pos;
 		do {
-			field.draw();
 			current = currentPlayer ? player1 : player2;
 			do {
 				pos = current.play(field);
 			}while(!field.addDisc(pos, current.getId()));
-			field.increaseCounter();
+			field.increaseRound();
 			currentPlayer = !currentPlayer;
+			field.draw();
 		}while(field.checkState() == 0);
-		if(field.checkState() == 2) {
+		if(field.checkState() == -1) {
 			System.out.println("Draw!");
 		}else {
-			System.out.println(field.getWinner().getName() + " won!");
+			System.out.println((field.checkState() == player1.getId() ? player1 : player2).getName() + " won!");
 		}
 	}
 	public boolean getBoolean(String question) {
@@ -53,6 +52,19 @@ public class Game {
 				if(sc.hasNext()) sc.nextLine();
 			}
 		}while(output < 1);
+		return output;
+	}
+	public String getString(String question) {
+		String output = "";
+		do {
+			System.out.println(question);
+			try {
+				output = sc.next();
+			}catch(Exception e) {
+				//Flush Scanner
+				if(sc.hasNext()) sc.nextLine();
+			}
+		}while(output == "");
 		return output;
 	}
 }
